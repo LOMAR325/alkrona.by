@@ -855,6 +855,7 @@ a {
     margin: 0 auto;
     border: 2px solid $green;
     border-radius: 16px;
+    overflow: hidden;
     border-collapse: separate;
     border-spacing: 0;
     min-width: min(640px, 100%);
@@ -875,6 +876,19 @@ a {
         text-align: left;
         min-width: 140px;
         color: $green;
+    }
+
+    tr:first-child th:first-child {
+        border-top-left-radius: 14px;
+    }
+    tr:first-child th:last-child {
+        border-top-right-radius: 14px;
+    }
+    tr:last-child td:first-child {
+        border-bottom-left-radius: 14px;
+    }
+    tr:last-child td:last-child {
+        border-bottom-right-radius: 14px;
     }
 }
 

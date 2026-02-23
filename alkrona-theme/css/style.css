@@ -724,13 +724,23 @@ a {
 }
 .product-hero__actions {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
   align-items: center;
 }
 
 .btn--buy {
-  min-width: 160px;
+  min-width: 240px;
+  min-height: 56px;
+  padding: 14px 40px;
+  border-radius: 12px;
+  font-size: 22px;
+  background: #F79355;
+  color: #FEFAEE;
+}
+
+.btn--buy:hover {
+  background: #F08745;
 }
 
 .price-matrix-wrap {
@@ -863,6 +873,11 @@ a {
   }
   .product-hero__price {
     font-size: 32px;
+  }
+  .btn--buy {
+    min-width: 200px;
+    font-size: 20px;
+    padding: 12px 30px;
   }
   .site-footer__inner {
     grid-template-columns: 1fr;

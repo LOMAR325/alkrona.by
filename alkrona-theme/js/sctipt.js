@@ -107,7 +107,7 @@ const ensurePhonePrefix = () => {
 
 if (nameInput) {
     nameInput.addEventListener('input', () => {
-        nameInput.value = nameInput.value.replace(/[^a-zA-Zа-яА-ЯёЁ\\s\\-]/g, '');
+        nameInput.value = nameInput.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s\-]/g, '');
         nameInput.setCustomValidity('');
     });
 }
@@ -178,52 +178,3 @@ if (form) {
         }
     });
 }
-
-// Заполнение карточек на главной из общего каталога
-(() => {
-    const cards = document.querySelectorAll('.products__grid .product-card[data-product-id]');
-    if (!cards.length) return;
-
-    const formatPrice = (value, currency) => {
-        if (typeof value === 'number') return `${value.toFixed(2)} ${currency || ''}`.trim();
-        if (value) return `${value} ${currency || ''}`.trim();
-        return '—';
-    };
-
-    fetch('assets/data/catalog.json')
-        .then((res) => res.json())
-        .then((data) => {
-            const products = (data.categories || []).flatMap((cat) => cat.products || []);
-            const map = new Map(products.map((p) => [p.id, p]));
-
-            cards.forEach((card) => {
-                const pid = card.dataset.productId;
-                const product = map.get(pid);
-                if (!product) return;
-
-                const img = card.querySelector('.product-card__img');
-                if (img) {
-                    img.src = product.image || img.src;
-                    img.alt = product.name || '';
-                }
-
-                const titleEl = card.querySelector('.product-card__title');
-                if (titleEl) titleEl.textContent = product.name || '';
-
-                const priceEl = card.querySelector('.product-card__price');
-                if (priceEl) {
-                    const prefixEl = priceEl.querySelector('.product-card__price-from');
-                    const valueEl = priceEl.querySelector('.product-card__price-value');
-                    if (prefixEl) prefixEl.textContent = product.pricePrefix ? `${product.pricePrefix} ` : '';
-                    if (valueEl) valueEl.textContent = formatPrice(product.price, product.currency);
-                }
-
-                const btn = card.querySelector('.product-card__btn');
-                if (btn) btn.href = product.link || `product.html?id=${encodeURIComponent(product.id)}`;
-
-                const pot = card.querySelector('.pot-badge text');
-                if (pot) pot.textContent = product.size || '';
-            });
-        })
-        .catch(() => {});
-})();
