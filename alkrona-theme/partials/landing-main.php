@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="hero__image">
-            <img src="<?php echo esc_url(alkrona_theme_image_url('hero_cta', 'cta.png')); ?>" alt="Композиция из растений" />
+            <?php echo wp_get_attachment_image(283, 'full'); ?>
         </div>
     </div>
 </section>
