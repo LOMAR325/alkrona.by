@@ -97,10 +97,10 @@ get_header();
         <div class="container">
             <table class="price-matrix" id="priceMatrix" aria-label="Цены по объему горшка">
                 <tr>
-                    <th>Горшок</th>
-                    <th>Высота</th>
-                    <th>Цена</th>
-                    <th>Наличие</th>
+                    <th scope="col">Горшок</th>
+                    <th scope="col">Высота</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">Наличие</th>
                 </tr>
 
                 <?php if ( $variants ) : ?>
@@ -114,19 +114,19 @@ get_header();
                         ?>
 
                         <tr>
-                            <td><?php echo esc_html( $variant_pot ?: '—' ); ?></td>
-                            <td><?php echo esc_html( $variant_height ?: '—' ); ?></td>
-                            <td><?php echo esc_html( alkrona_format_price( $variant_price ) ); ?></td>
-                            <td><?php echo esc_html( $variant_availability ?: '—' ); ?></td>
+                            <td data-label="Горшок"><?php echo esc_html( $variant_pot ?: '—' ); ?></td>
+                            <td data-label="Высота"><?php echo esc_html( $variant_height ?: '—' ); ?></td>
+                            <td data-label="Цена"><?php echo esc_html( alkrona_format_price( $variant_price ) ); ?></td>
+                            <td data-label="Наличие"><?php echo esc_html( $variant_availability ?: '—' ); ?></td>
                         </tr>
 
                     <?php endforeach; ?>
                 <?php else : ?>
                     <tr>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
+                        <td data-label="Горшок">—</td>
+                        <td data-label="Высота">—</td>
+                        <td data-label="Цена">—</td>
+                        <td data-label="Наличие">—</td>
                     </tr>
                 <?php endif; ?>
 

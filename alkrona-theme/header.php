@@ -46,7 +46,7 @@
     <div class="site-header__drawer" id="site-menu">
         <div class="container site-header__drawer-inner">
             <a class="site-header__drawer-link" href="<?php echo esc_url(alkrona_section_url('contacts')); ?>">Контакты</a>
-            <a class="site-header__drawer-link" href="<?php echo esc_url(alkrona_section_url('why')); ?>">Почему мы?</a>
+            <a class="site-header__drawer-link" href="<?php echo esc_url(alkrona_section_url('why')); ?>">О нас</a>
             <a class="site-header__drawer-link" href="<?php echo esc_url(alkrona_catalog_url()); ?>">Каталог</a>
             <a class="site-header__drawer-link" href="<?php echo esc_url(alkrona_section_url('delivery')); ?>">Оплата и доставка</a>
             <a class="btn btn--ghost site-header__drawer-phone" href="tel:+375293191844">+375(29) 319 18 44</a>
