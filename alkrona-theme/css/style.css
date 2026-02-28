@@ -723,6 +723,11 @@ a {
   font-weight: 500;
   color: #4CAF50;
 }
+.product-hero__price-buy {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 .product-hero__actions {
   display: flex;
   gap: 16px;
@@ -892,6 +897,9 @@ body.popup-open {
   .site-header__nav {
     display: none;
   }
+  .product-hero__price-buy {
+    justify-content: space-around;
+  }
   .site-header__toggle {
     display: inline-flex;
   }
@@ -1001,5 +1009,10 @@ body.popup-open {
   .form__label--margin {
     margin-top: 0;
     margin-bottom: 0;
+  }
+}
+@media (max-width: 500px) {
+  .product-hero__price-buy {
+    justify-content: center;
   }
 }/*# sourceMappingURL=style.css.map */

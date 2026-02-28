@@ -70,22 +70,24 @@ get_header();
                 ?>
             </div>
 
-            <p class="product-hero__price">
-                <span class="product-card__price-from">
-                    <?php echo esc_html( $price_prefix ); ?>
-                </span>
-                <span>
-                    <?php echo esc_html( $price_text ); ?>
-                </span>
-            </p>
+            <div class="product-hero__price-buy">
+                <p class="product-hero__price">
+                    <span class="product-card__price-from">
+                        <?php echo esc_html( $price_prefix ); ?>
+                    </span>
+                    <span>
+                        <?php echo esc_html( $price_text ); ?>
+                    </span>
+                </p>
 
-            <div class="product-hero__actions">
-                <a class="btn btn--secondary btn--buy"
-                   href="<?php echo esc_url( alkrona_section_url( 'contacts' ) ); ?>"
-                   data-open-contact-popup
-                   data-product-name="<?php echo esc_attr( $product_title ); ?>">
-                    Купить
-                </a>
+                <div class="product-hero__actions">
+                    <a class="btn btn--secondary btn--buy"
+                       href="<?php echo esc_url( alkrona_section_url( 'contacts' ) ); ?>"
+                       data-open-contact-popup
+                       data-product-name="<?php echo esc_attr( $product_title ); ?>">
+                        Купить
+                    </a>
+                </div>
             </div>
 
         </div>
