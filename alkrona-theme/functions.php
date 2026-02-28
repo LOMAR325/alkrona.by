@@ -936,3 +936,90 @@ function alkrona_featured_product_ids(int $limit = 4): array
 if (!isset($content_width)) {
     $content_width = 1200;
 }
+
+
+// Подключаем ajax для авторизованных и неавторизованных пользователей
+add_action('wp_ajax_send_contact_form', 'send_contact_form');
+add_action('wp_ajax_nopriv_send_contact_form', 'send_contact_form');
+
+function send_contact_form() {
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+        wp_send_json_error('Некорректный тип запроса.', 405);
+    }
+
+    // Проверка nonce (защита)
+    check_ajax_referer('contact_form_nonce', 'security');
+
+    $name         = isset($_POST['name']) ? sanitize_text_field(wp_unslash($_POST['name'])) : '';
+    $phone        = isset($_POST['phone']) ? sanitize_text_field(wp_unslash($_POST['phone'])) : '';
+    $email        = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
+    $product_name = isset($_POST['product_name']) ? sanitize_text_field(wp_unslash($_POST['product_name'])) : '';
+    $consent      = !empty($_POST['consent']);
+
+    if ($name === '' || $phone === '') {
+        wp_send_json_error('Заполните обязательные поля: имя и телефон.');
+    }
+
+    if (!$consent) {
+        wp_send_json_error('Подтвердите согласие на обработку персональных данных.');
+    }
+
+    if ($email !== '' && !is_email($email)) {
+        wp_send_json_error('Укажите корректный e-mail или оставьте поле пустым.');
+    }
+
+    // Приоритет: отдельная опция для формы, затем стандартный e-mail администратора.
+    $to = get_option('alkrona_contact_form_recipient');
+    if (!is_string($to) || !is_email($to)) {
+        $to = get_option('admin_email');
+    }
+
+    if (!is_string($to) || !is_email($to)) {
+        wp_send_json_error('Не настроен e-mail получателя заявок.');
+    }
+
+    $subject = 'Новая заявка с сайта';
+    $message_rows = [
+        '<p style="margin:0 0 10px;"><strong>Имя:</strong> ' . esc_html($name) . '</p>',
+        '<p style="margin:0 0 10px;"><strong>Телефон:</strong> ' . esc_html($phone) . '</p>',
+        '<p style="margin:0 0 10px;"><strong>Email:</strong> ' . esc_html($email !== '' ? $email : 'не указан') . '</p>',
+    ];
+
+    if ($product_name !== '') {
+        $message_rows[] = '<p style="margin:0 0 10px;"><strong>Товар:</strong> '
+            . '<span style="font-size:20px;font-weight:700;line-height:1.3;color:#22543D;">'
+            . esc_html($product_name)
+            . '</span></p>';
+    }
+
+    $message_rows[] = '<p style="margin:0;"><strong>Дата:</strong> ' . esc_html(wp_date('Y-m-d H:i:s')) . '</p>';
+
+    $message = '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.45;color:#111;">'
+        . implode('', $message_rows)
+        . '</div>';
+
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+
+    if ($email !== '') {
+        $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
+    }
+
+    if (wp_mail($to, $subject, $message, $headers)) {
+        wp_send_json_success('Сообщение успешно отправлено!');
+    }
+
+    wp_send_json_error('Ошибка отправки. Попробуйте позже.');
+}
+
+function theme_scripts() {
+    $contact_js_file = get_template_directory() . '/js/contact-form.js';
+    $contact_js_ver  = file_exists($contact_js_file) ? filemtime($contact_js_file) : ALKRONA_THEME_VERSION;
+
+    wp_enqueue_script('contact-form-js', get_template_directory_uri() . '/js/contact-form.js', ['alkrona-script'], $contact_js_ver, true);
+
+    wp_localize_script('contact-form-js', 'contactForm', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('contact_form_nonce'),
+    ]);
+}
+add_action('wp_enqueue_scripts', 'theme_scripts');

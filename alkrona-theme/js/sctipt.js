@@ -16,120 +16,151 @@ if (toggle && header) {
     });
 }
 
-const form = document.getElementById('contactForm');
-const nameInput = document.getElementById('name');
-const phoneInput = document.getElementById('phone');
-const emailInput = document.getElementById('email');
 const phonePattern = /^\+375 \(\d{2}\) \d{3}-\d{2}-\d{2}$/;
 const phonePrefix = '+375 (';
 
-const formatPhone = (value) => {
-    let digits = value.replace(/\D/g, '');
-    if (digits.startsWith('375')) {
-        digits = digits.slice(3);
-    }
-    digits = digits.slice(0, 9);
+const getCurrentProductName = () => {
+    const candidates = [
+        document.querySelector('.product-hero__title'),
+        document.querySelector('.product_title'),
+        document.querySelector('h1'),
+    ];
 
-    const part1 = digits.slice(0, 2);
-    const part2 = digits.slice(2, 5);
-    const part3 = digits.slice(5, 7);
-    const part4 = digits.slice(7, 9);
+    for (const item of candidates) {
+        if (!item) continue;
+        const text = item.textContent ? item.textContent.trim() : '';
+        if (text !== '') return text;
+    }
 
-    let result = '+375';
-    if (part1.length) {
-        result += ' (' + part1;
-        if (part1.length === 2) result += ')';
-    }
-    if (part2.length) {
-        result += ' ' + part2;
-    }
-    if (part3.length) {
-        result += '-' + part3;
-    }
-    if (part4.length) {
-        result += '-' + part4;
-    }
-    return result;
+    return '';
 };
 
-const setPhoneCaretEnd = () => {
-    if (!phoneInput) return;
-    requestAnimationFrame(() => {
-        const pos = phoneInput.value.length;
-        phoneInput.setSelectionRange(pos, pos);
+const setProductName = (productName = '') => {
+    const normalizedName = productName.trim() !== '' ? productName.trim() : getCurrentProductName();
+
+    document.querySelectorAll('.js-product-name').forEach((input) => {
+        input.value = normalizedName;
+    });
+
+    document.querySelectorAll('.js-popup-product-name').forEach((node) => {
+        node.textContent = normalizedName || 'Не указан';
     });
 };
 
-const getLocalDigitsBeforeCaret = (value, caretPos) => {
-    let count = 0;
-    for (let i = 0; i < caretPos; i += 1) {
-        if (/\d/.test(value[i])) count += 1;
-    }
-    return Math.max(0, count - 3);
-};
+const initFormValidation = (form) => {
+    const nameInput = form.querySelector('input[name="name"]');
+    const phoneInput = form.querySelector('input[name="phone"]');
+    const emailInput = form.querySelector('input[name="email"]');
 
-const removeLocalDigitAt = (value, index) => {
-    let digits = value.replace(/\D/g, '');
-    if (digits.startsWith('375')) digits = digits.slice(3);
-    if (index < 0 || index >= digits.length) return digits;
-    return digits.slice(0, index) + digits.slice(index + 1);
-};
-
-const setCaretByLocalDigits = (localCount) => {
-    if (!phoneInput) return;
-    if (localCount <= 0) {
-        phoneInput.setSelectionRange(phonePrefix.length, phonePrefix.length);
+    if (!nameInput || !phoneInput) {
         return;
     }
-    const targetDigits = localCount + 3;
-    let count = 0;
-    for (let i = 0; i < phoneInput.value.length; i += 1) {
-        if (/\d/.test(phoneInput.value[i])) {
-            count += 1;
-            if (count === targetDigits) {
-                phoneInput.setSelectionRange(i + 1, i + 1);
-                return;
+
+    const formatPhone = (value) => {
+        let digits = value.replace(/\D/g, '');
+        if (digits.startsWith('375')) {
+            digits = digits.slice(3);
+        }
+        digits = digits.slice(0, 9);
+
+        const part1 = digits.slice(0, 2);
+        const part2 = digits.slice(2, 5);
+        const part3 = digits.slice(5, 7);
+        const part4 = digits.slice(7, 9);
+
+        let result = '+375';
+        if (part1.length) {
+            result += ' (' + part1;
+            if (part1.length === 2) result += ')';
+        }
+        if (part2.length) {
+            result += ' ' + part2;
+        }
+        if (part3.length) {
+            result += '-' + part3;
+        }
+        if (part4.length) {
+            result += '-' + part4;
+        }
+        return result;
+    };
+
+    const setPhoneCaretEnd = () => {
+        requestAnimationFrame(() => {
+            const pos = phoneInput.value.length;
+            phoneInput.setSelectionRange(pos, pos);
+        });
+    };
+
+    const getLocalDigitsBeforeCaret = (value, caretPos) => {
+        let count = 0;
+        for (let i = 0; i < caretPos; i += 1) {
+            if (/\d/.test(value[i])) count += 1;
+        }
+        return Math.max(0, count - 3);
+    };
+
+    const removeLocalDigitAt = (value, index) => {
+        let digits = value.replace(/\D/g, '');
+        if (digits.startsWith('375')) digits = digits.slice(3);
+        if (index < 0 || index >= digits.length) return digits;
+        return digits.slice(0, index) + digits.slice(index + 1);
+    };
+
+    const setCaretByLocalDigits = (localCount) => {
+        if (localCount <= 0) {
+            phoneInput.setSelectionRange(phonePrefix.length, phonePrefix.length);
+            return;
+        }
+        const targetDigits = localCount + 3;
+        let count = 0;
+        for (let i = 0; i < phoneInput.value.length; i += 1) {
+            if (/\d/.test(phoneInput.value[i])) {
+                count += 1;
+                if (count === targetDigits) {
+                    phoneInput.setSelectionRange(i + 1, i + 1);
+                    return;
+                }
             }
         }
-    }
-    setPhoneCaretEnd();
-};
+        setPhoneCaretEnd();
+    };
 
-const ensurePhonePrefix = () => {
-    if (!phoneInput) return;
-    if (!phoneInput.value) {
-        phoneInput.value = phonePrefix;
-    } else if (!phoneInput.value.startsWith('+375')) {
-        phoneInput.value = formatPhone(phoneInput.value);
-    }
-    setPhoneCaretEnd();
-};
+    const ensurePhonePrefix = () => {
+        if (!phoneInput.value) {
+            phoneInput.value = phonePrefix;
+        } else if (!phoneInput.value.startsWith('+375')) {
+            phoneInput.value = formatPhone(phoneInput.value);
+        }
+        setPhoneCaretEnd();
+    };
 
-if (nameInput) {
     nameInput.addEventListener('input', () => {
         nameInput.value = nameInput.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s\-]/g, '');
         nameInput.setCustomValidity('');
     });
-}
 
-if (phoneInput) {
     phoneInput.addEventListener('focus', () => {
         ensurePhonePrefix();
     });
+
     phoneInput.addEventListener('click', () => {
         if (phoneInput.selectionStart < phonePrefix.length) {
             setPhoneCaretEnd();
         }
     });
+
     phoneInput.addEventListener('keydown', (event) => {
         const start = phoneInput.selectionStart;
         const end = phoneInput.selectionEnd;
         if (start === null || end === null) return;
+
         if (event.key === 'Backspace' && start <= phonePrefix.length) {
             event.preventDefault();
             setPhoneCaretEnd();
             return;
         }
+
         if (event.key === 'Backspace' && start === end) {
             const caret = start;
             if (caret > phonePrefix.length && /\D/.test(phoneInput.value[caret - 1])) {
@@ -142,11 +173,13 @@ if (phoneInput) {
             }
         }
     });
+
     phoneInput.addEventListener('input', () => {
         phoneInput.value = formatPhone(phoneInput.value);
         phoneInput.setCustomValidity('');
         setPhoneCaretEnd();
     });
+
     phoneInput.addEventListener('blur', () => {
         if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
             phoneInput.setCustomValidity('Введите номер в формате +375 (__) ___-__-__');
@@ -154,27 +187,84 @@ if (phoneInput) {
             phoneInput.setCustomValidity('');
         }
     });
-}
 
-if (emailInput) {
-    emailInput.addEventListener('input', () => {
-        emailInput.value = emailInput.value.replace(/\s+/g, '');
-    });
-}
+    if (emailInput) {
+        emailInput.addEventListener('input', () => {
+            emailInput.value = emailInput.value.replace(/\s+/g, '');
+        });
+    }
 
-if (form) {
     form.addEventListener('submit', (event) => {
-        if (phoneInput && phoneInput.value && !phonePattern.test(phoneInput.value)) {
+        if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
             phoneInput.setCustomValidity('Введите номер в формате +375 (__) ___-__-__');
             phoneInput.reportValidity();
             phoneInput.focus();
             setPhoneCaretEnd();
             event.preventDefault();
         }
-        if (nameInput && nameInput.value.trim().length < 2) {
+
+        if (nameInput.value.trim().length < 2) {
             nameInput.setCustomValidity('Введите корректное имя');
             nameInput.reportValidity();
             event.preventDefault();
         }
+    });
+};
+
+document.querySelectorAll('.js-contact-form').forEach((form) => {
+    initFormValidation(form);
+});
+
+setProductName();
+
+const popup = document.getElementById('productBuyPopup');
+const buyButtons = document.querySelectorAll('.btn--buy, [data-open-contact-popup]');
+let lastFocusedElement = null;
+
+const openPopup = (productName = '') => {
+    if (!popup) return;
+
+    setProductName(productName);
+    popup.classList.add('product-popup--open');
+    popup.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('popup-open');
+
+    const nameInput = popup.querySelector('input[name="name"]');
+    if (nameInput) {
+        nameInput.focus();
+    }
+};
+
+const closePopup = () => {
+    if (!popup) return;
+
+    popup.classList.remove('product-popup--open');
+    popup.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('popup-open');
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+    }
+};
+
+if (popup) {
+    popup.querySelectorAll('[data-popup-close]').forEach((element) => {
+        element.addEventListener('click', closePopup);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && popup.classList.contains('product-popup--open')) {
+            closePopup();
+        }
+    });
+
+    buyButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            lastFocusedElement = button;
+
+            const productName = button.dataset.productName ? button.dataset.productName.trim() : '';
+            openPopup(productName);
+        });
     });
 }

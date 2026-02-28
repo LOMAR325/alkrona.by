@@ -147,7 +147,7 @@ $product_cats = get_terms([
                                         <line x1="12.5" y1="36.0002" x2="40.5" y2="36.0002" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
                                         <line x1="1.5" y1="-1.5" x2="37.1826" y2="-1.5" transform="matrix(0.29468 -0.955596 0.957003 0.290079 41.601 37.4829)" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
                                         <line x1="1.5" y1="-1.5" x2="37.1826" y2="-1.5" transform="matrix(-0.29468 -0.955596 -0.957003 0.290079 11.399 37.4651)" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-                                        <text x="26.5" y="23" text-anchor="middle" font-size="20" font-weight="500" fill="currentColor"><?php echo esc_html($container); ?></text>
+                                        <text x="26.5" y="23" text-anchor="middle" font-size="18" font-weight="500" fill="currentColor"><?php echo esc_html($container); ?></text>
                                     </svg>
                                 </span>
                             </div>

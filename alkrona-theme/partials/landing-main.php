@@ -4,10 +4,8 @@
 <section class="hero" id="top">
     <div class="container hero__inner">
         <div class="hero__text">
-            <h1 class="hero__title"><span class="hero__title-bold">Коллекция растений</span><br><span
-                    class="hero__title-light">для дома и сада</span></h1>
-            <p class="hero__subtitle">Поможем создать и вырастить сад вашей мечты, который будет радовать
-                годами.</p>
+            <h1 class="hero__title"><span class="hero__title-bold">Питомник декоративных растений</span><br></h1>
+            <p class="hero__subtitle">Мы выращиваем растения, которые служат долго и создают живые пространства с заботой о людях и земле</p>
             <div class="hero__actions">
                 <a class="btn btn--primary hero__btn" href="#catalog">Каталог</a>
                 <a class="btn btn--secondary hero__btn hero__btn--accent" href="#contact-form">Подобрать
@@ -15,7 +13,7 @@
             </div>
         </div>
         <div class="hero__image">
-            <?php echo wp_get_attachment_image(283, 'full'); ?>
+            <?php echo wp_get_attachment_image(352, 'full'); ?>
         </div>
     </div>
 </section>
@@ -102,7 +100,7 @@
                 $price_text   = alkrona_product_price_text((int) $product_id);
                 $price_prefix = alkrona_product_price_prefix((int) $product_id);
                 $container    = alkrona_product_container((int) $product_id);
-                ?>
+            ?>
                 <article class="product-card">
                     <div class="product-card__img-wrap">
                         <?php
@@ -134,7 +132,7 @@
                                 <line x1="1.5" y1="-1.5" x2="37.1826" y2="-1.5"
                                     transform="matrix(-0.29468 -0.955596 -0.957003 0.290079 11.399 37.4651)"
                                     stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-                                <text x="26.5" y="23" text-anchor="middle" font-size="20" font-weight="500"
+                                <text x="26.5" y="23" text-anchor="middle" font-size="18" font-weight="500"
                                     fill="currentColor"><?php echo esc_html($container); ?></text>
                             </svg>
                         </span>

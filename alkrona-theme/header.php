@@ -11,7 +11,7 @@
     <div class="container site-header__inner">
         <nav class="site-header__nav site-header__nav--left">
             <a class="site-header__link" href="<?php echo esc_url(alkrona_section_url('contacts')); ?>">Контакты</a>
-            <a class="site-header__link" href="<?php echo esc_url(alkrona_section_url('why')); ?>">Почему мы?</a>
+            <a class="site-header__link" href="<?php echo esc_url(alkrona_section_url('why')); ?>">О нас</a>
             <a class="site-header__link" href="<?php echo esc_url(alkrona_catalog_url()); ?>">Каталог</a>
         </nav>
 
