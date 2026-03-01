@@ -28,25 +28,86 @@ get_header();
     $price_text   = function_exists( 'alkrona_product_price_text' ) ? alkrona_product_price_text( $product_id ) : '';
     $price_prefix = function_exists( 'alkrona_product_price_prefix' ) ? alkrona_product_price_prefix( $product_id ) : '';
     $variants     = function_exists( 'alkrona_product_variants' ) ? alkrona_product_variants( $product_id ) : [];
+
+    $gallery_ids = [];
+    if ( has_post_thumbnail( $product_id ) ) {
+        $gallery_ids[] = (int) get_post_thumbnail_id( $product_id );
+    }
+    if ( $product instanceof WC_Product ) {
+        $gallery_ids = array_merge( $gallery_ids, array_map( 'intval', $product->get_gallery_image_ids() ) );
+    }
+    $gallery_ids = array_values( array_unique( array_filter( $gallery_ids ) ) );
+    $has_gallery_controls = count( $gallery_ids ) > 1;
     ?>
 
     <section class="container product-hero" id="product">
         <div class="product-hero__image">
-            <?php
-            if ( has_post_thumbnail( $product_id ) ) {
-                echo wp_get_attachment_image(
-                    get_post_thumbnail_id( $product_id ),
-                    'large',
-                    false,
-                    [ 'loading' => 'lazy' ]
-                );
-            } else {
-                echo '<img src="' .
-                    esc_url( alkrona_theme_image_url( 'product_placeholder', 'birucha.png' ) ) .
-                    '" alt="' . esc_attr( $product_title ) .
-                    '" loading="lazy" />';
-            }
-            ?>
+            <div class="product-gallery" data-product-gallery tabindex="0">
+                <div class="product-gallery__main">
+                    <?php if ( ! empty( $gallery_ids ) ) : ?>
+                        <?php foreach ( $gallery_ids as $index => $attachment_id ) : ?>
+                            <div
+                                class="product-gallery__slide<?php echo $index === 0 ? ' is-active' : ''; ?>"
+                                data-gallery-slide
+                                aria-hidden="<?php echo $index === 0 ? 'false' : 'true'; ?>">
+                                <?php
+                                echo wp_get_attachment_image(
+                                    $attachment_id,
+                                    'large',
+                                    false,
+                                    [
+                                        'class'   => 'product-gallery__img',
+                                        'loading' => $index === 0 ? 'eager' : 'lazy',
+                                    ]
+                                );
+                                ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <div class="product-gallery__slide is-active" data-gallery-slide aria-hidden="false">
+                            <img
+                                class="product-gallery__img"
+                                src="<?php echo esc_url( alkrona_theme_image_url( 'product_placeholder', 'birucha.png' ) ); ?>"
+                                alt="<?php echo esc_attr( $product_title ); ?>"
+                                loading="eager" />
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ( $has_gallery_controls ) : ?>
+                        <button type="button" class="product-gallery__nav product-gallery__nav--prev" data-gallery-prev aria-label="Предыдущее фото">
+                            &#8249;
+                        </button>
+                        <button type="button" class="product-gallery__nav product-gallery__nav--next" data-gallery-next aria-label="Следующее фото">
+                            &#8250;
+                        </button>
+                    <?php endif; ?>
+                </div>
+
+                <?php if ( $has_gallery_controls ) : ?>
+                    <div class="product-gallery__thumbs">
+                        <?php foreach ( $gallery_ids as $index => $attachment_id ) : ?>
+                            <button
+                                type="button"
+                                class="product-gallery__thumb<?php echo $index === 0 ? ' is-active' : ''; ?>"
+                                data-gallery-thumb="<?php echo esc_attr( (string) $index ); ?>"
+                                aria-label="<?php echo esc_attr( 'Фото ' . ( $index + 1 ) ); ?>"
+                                aria-current="<?php echo $index === 0 ? 'true' : 'false'; ?>">
+                                <?php
+                                echo wp_get_attachment_image(
+                                    $attachment_id,
+                                    'thumbnail',
+                                    false,
+                                    [
+                                        'class'   => 'product-gallery__thumb-img',
+                                        'loading' => 'lazy',
+                                    ]
+                                );
+                                ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
 
         <div class="product-hero__content">

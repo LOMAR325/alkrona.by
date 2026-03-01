@@ -16,6 +16,77 @@ if (toggle && header) {
     });
 }
 
+const initProductGallery = () => {
+    const galleries = document.querySelectorAll('[data-product-gallery]');
+
+    galleries.forEach((gallery) => {
+        const slides = Array.from(gallery.querySelectorAll('[data-gallery-slide]'));
+        const thumbs = Array.from(gallery.querySelectorAll('[data-gallery-thumb]'));
+        const prevButton = gallery.querySelector('[data-gallery-prev]');
+        const nextButton = gallery.querySelector('[data-gallery-next]');
+
+        if (slides.length <= 1) {
+            return;
+        }
+
+        let currentIndex = slides.findIndex((slide) => slide.classList.contains('is-active'));
+        if (currentIndex < 0) {
+            currentIndex = 0;
+        }
+
+        const setSlide = (nextIndex) => {
+            const total = slides.length;
+            const index = (nextIndex % total + total) % total;
+            currentIndex = index;
+
+            slides.forEach((slide, slideIndex) => {
+                const isActive = slideIndex === index;
+                slide.classList.toggle('is-active', isActive);
+                slide.setAttribute('aria-hidden', String(!isActive));
+            });
+
+            thumbs.forEach((thumb, thumbIndex) => {
+                const isActive = thumbIndex === index;
+                thumb.classList.toggle('is-active', isActive);
+                thumb.setAttribute('aria-current', isActive ? 'true' : 'false');
+            });
+        };
+
+        prevButton?.addEventListener('click', () => {
+            setSlide(currentIndex - 1);
+        });
+
+        nextButton?.addEventListener('click', () => {
+            setSlide(currentIndex + 1);
+        });
+
+        thumbs.forEach((thumb) => {
+            thumb.addEventListener('click', () => {
+                const index = Number.parseInt(thumb.dataset.galleryThumb || '-1', 10);
+                if (Number.isNaN(index) || index < 0) {
+                    return;
+                }
+                setSlide(index);
+            });
+        });
+
+        gallery.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                setSlide(currentIndex - 1);
+            }
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                setSlide(currentIndex + 1);
+            }
+        });
+
+        setSlide(currentIndex);
+    });
+};
+
+initProductGallery();
+
 const phonePattern = /^\+375 \(\d{2}\) \d{3}-\d{2}-\d{2}$/;
 const phonePrefix = '+375 (';
 
@@ -229,9 +300,9 @@ const openPopup = (productName = '') => {
     popup.setAttribute('aria-hidden', 'false');
     document.body.classList.add('popup-open');
 
-    const nameInput = popup.querySelector('input[name="name"]');
-    if (nameInput) {
-        nameInput.focus();
+    const closeButton = popup.querySelector('[data-popup-close]');
+    if (closeButton) {
+        closeButton.focus();
     }
 };
 

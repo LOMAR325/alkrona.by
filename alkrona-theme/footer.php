@@ -12,7 +12,7 @@
                 <span>Адрес:</span>
                 <span>микрорайон "Свислочь Новая", г.п. Свислочь,</span>
                 <span>Минская область 220823</span>
-                <span class="developer">Разработано <strong>VZ</strong>.</span>
+                <span class="developer"><a href="https://zholudz.com/">Разработано <strong>VZ</strong>.</a></span>
             </div>
         </div>
     </footer>

@@ -61,8 +61,9 @@
     <div class="product-popup__dialog" role="dialog" aria-modal="true" aria-labelledby="productPopupTitle">
         <button type="button" class="product-popup__close" aria-label="Закрыть" data-popup-close>&times;</button>
         <div class="product-popup__content">
-            <h4 class="product-popup__title" id="productPopupTitle">Оставить заявку</h4>
-            <p class="product-popup__subtitle">Мы свяжемся с вами для оформления заказа.</p>
+            <h4 class="product-popup__title" id="productPopupTitle">Оформление заказа</h4>
+            <p class="product-popup__subtitle">Для заказа звоните по телефону:</p>
+            <p class="product-popup__phone"><a href="tel:+375293191844">+375 (29) 319 18 44</a></p>
             <p class="product-popup__product">Товар: <strong class="js-popup-product-name"><?php echo esc_html((string) get_the_title()); ?></strong></p>
             <div class="product-popup__delivery">
                 <p class="product-popup__delivery-title"><strong>Самовывоз из питомника — бесплатно</strong></p>
@@ -72,28 +73,6 @@
                 <p class="product-popup__delivery-text">Доставка по г. Минску и в радиусе 10-30 км от Минска при заказе от 1000 руб., согласовывается с менеджером на индивидуальных условиях.</p>
                 <p class="product-popup__delivery-text"><strong>Доставка через транспортную компанию:</strong> только по г. Минску.</p>
             </div>
-
-            <form class="contact__form contact__form--popup js-contact-form" id="productPopupForm">
-                <div class="contact__form__block">
-                    <div>
-                        <label for="popup-name" class="form__label">ФИО</label>
-                        <label for="popup-phone" class="form__label form__label--margin">Телефон</label>
-                        <label for="popup-email" class="form__label">Почта</label>
-                    </div>
-                    <div>
-                        <input type="text" id="popup-name" name="name" class="form__input" placeholder="Ваше имя" autocomplete="name" pattern="[A-Za-zА-Яа-яЁё\s\-]+" title="Только буквы, пробелы и дефис" required>
-                        <input type="tel" id="popup-phone" name="phone" class="form__input form__input--margin" placeholder="+375 (__) ___-__-__" inputmode="numeric" autocomplete="tel" pattern="\+375 \(\d{2}\) \d{3}-\d{2}-\d{2}" title="Формат: +375 (__) ___-__-__" maxlength="19" required>
-                        <input type="email" id="popup-email" name="email" class="form__input" placeholder="email@example.com" autocomplete="email">
-                        <input type="hidden" name="product_name" class="js-product-name" value="">
-                    </div>
-                </div>
-                <div class="form__checkbox">
-                    <input type="checkbox" id="popup-consent" name="consent" required>
-                    <label for="popup-consent">Согласие на обработку персональных данных</label>
-                </div>
-                <button type="submit" class="form__button">Отправить</button>
-            </form>
-            <div id="popupFormStatus" class="form__status js-form-status" style="margin-top: 20px;"></div>
         </div>
     </div>
 </div>
