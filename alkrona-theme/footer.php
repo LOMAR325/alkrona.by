@@ -10,8 +10,8 @@
             </div>
             <div class="site-footer__right">
                 <span>Адрес:</span>
-                <span>микрорайон "Свислочь Новая", г.п.</span>
-                <span>Свислочь, Минская область 220823</span>
+                <span>микрорайон "Свислочь Новая", г.п. Свислочь,</span>
+                <span>Минская область 220823</span>
                 <span class="developer">Разработано <strong>VZ</strong>.</span>
             </div>
         </div>

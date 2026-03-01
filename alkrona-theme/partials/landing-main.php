@@ -26,39 +26,24 @@
                 <img class="audience-card__icon" src="<?php echo esc_url(alkrona_theme_image_url('audience_land_icon', 'land_comp.png')); ?>" alt="Ландшафтные компании" />
                 <h3 class="audience-card__title">Ландшафтные компании</h3>
                 <p class="audience-card__desc">Оптовые партии, подбор под проекты</p>
-                <div class="audience-card__img-wrap">
-                    <img class="audience-card__img" src="<?php echo esc_url(alkrona_theme_image_url('audience_land_img', 'land_comp_img.png')); ?>"
-                        alt="Ландшафтные компании" />
-                </div>
             </article>
 
             <article class="audience-card">
                 <img class="audience-card__icon" src="<?php echo esc_url(alkrona_theme_image_url('audience_clients_icon', 'clients.png')); ?>" alt="Частные клиенты" />
                 <h3 class="audience-card__title">Частные клиенты</h3>
                 <p class="audience-card__desc">Сад для дома и дачи</p>
-                <div class="audience-card__img-wrap">
-                    <img class="audience-card__img" src="<?php echo esc_url(alkrona_theme_image_url('audience_clients_img', 'clients_img.png')); ?>" alt="Частные клиенты" />
-                </div>
             </article>
 
             <article class="audience-card">
                 <img class="audience-card__icon" src="<?php echo esc_url(alkrona_theme_image_url('audience_dev_icon', 'dev.png')); ?>" alt="Девелоперы и застройщики" />
                 <h3 class="audience-card__title">Девелоперы и застройщики</h3>
                 <p class="audience-card__desc">Озеленение территорий</p>
-                <div class="audience-card__img-wrap">
-                    <img class="audience-card__img" src="<?php echo esc_url(alkrona_theme_image_url('audience_dev_img', 'dev_img.png')); ?>"
-                        alt="Девелоперы и застройщики" />
-                </div>
             </article>
 
             <article class="audience-card">
                 <img class="audience-card__icon" src="<?php echo esc_url(alkrona_theme_image_url('audience_centers_icon', 'sad_centers.png')); ?>" alt="Садовые центры" />
                 <h3 class="audience-card__title">Садовые центры</h3>
                 <p class="audience-card__desc">Регулярные поставки растений</p>
-                <div class="audience-card__img-wrap">
-                    <img class="audience-card__img" src="<?php echo esc_url(alkrona_theme_image_url('audience_centers_img', 'sad_centers_img.png')); ?>"
-                        alt="Садовые центры" />
-                </div>
             </article>
         </div>
     </div>

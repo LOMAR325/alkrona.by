@@ -168,17 +168,53 @@ function alkrona_ensure_catalog_page(): void
     ]);
 }
 
+function alkrona_ensure_about_page(): void
+{
+    $existing = get_page_by_path('about');
+    if ($existing instanceof WP_Post) {
+        return;
+    }
+
+    wp_insert_post([
+        'post_type'    => 'page',
+        'post_status'  => 'publish',
+        'post_title'   => 'О нас',
+        'post_name'    => 'about',
+        'post_content' => '',
+    ]);
+}
+
+function alkrona_ensure_delivery_page(): void
+{
+    $existing = get_page_by_path('delivery');
+    if ($existing instanceof WP_Post) {
+        return;
+    }
+
+    wp_insert_post([
+        'post_type'    => 'page',
+        'post_status'  => 'publish',
+        'post_title'   => 'Оплата и доставка',
+        'post_name'    => 'delivery',
+        'post_content' => '',
+    ]);
+}
+
 add_action('after_switch_theme', function () {
     alkrona_ensure_catalog_page();
+    alkrona_ensure_about_page();
+    alkrona_ensure_delivery_page();
     flush_rewrite_rules();
 });
 
 add_action('init', function () {
-    $rewrite_version = ALKRONA_THEME_VERSION . '-catalog-v4';
+    $rewrite_version = ALKRONA_THEME_VERSION . '-catalog-v6';
     $stored_version  = get_option('alkrona_rewrite_version');
 
     if ($stored_version !== $rewrite_version) {
         alkrona_ensure_catalog_page();
+        alkrona_ensure_about_page();
+        alkrona_ensure_delivery_page();
         flush_rewrite_rules();
         update_option('alkrona_rewrite_version', $rewrite_version);
     }
@@ -227,6 +263,32 @@ function alkrona_catalog_url(): string
 
     $archive_url = get_post_type_archive_link(alkrona_product_post_type());
     return $archive_url ? $archive_url : home_url('/catalog/');
+}
+
+function alkrona_about_url(): string
+{
+    $about_page = get_page_by_path('about');
+    if ($about_page instanceof WP_Post) {
+        $url = get_permalink($about_page->ID);
+        if ($url) {
+            return $url;
+        }
+    }
+
+    return home_url('/about/');
+}
+
+function alkrona_delivery_url(): string
+{
+    $delivery_page = get_page_by_path('delivery');
+    if ($delivery_page instanceof WP_Post) {
+        $url = get_permalink($delivery_page->ID);
+        if ($url) {
+            return $url;
+        }
+    }
+
+    return home_url('/delivery/');
 }
 
 function alkrona_has_pretty_permalinks(): bool
