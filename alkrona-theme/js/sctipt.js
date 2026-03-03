@@ -87,6 +87,72 @@ const initProductGallery = () => {
 
 initProductGallery();
 
+const initRevealAnimations = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+        return;
+    }
+
+    const revealSelectors = [
+        '.hero__content',
+        '.hero__image',
+        '.section-title',
+        '.about-value-card',
+        '.about-gallery__item',
+        '.delivery-card',
+        '.audience-card',
+        '.category-card',
+        '.product-card',
+        '.catalog-card',
+        '.form-map',
+        '.product-gallery',
+        '.product-hero__content',
+        '.price-matrix-wrap',
+        '.contact__title',
+        '.contact__info',
+    ];
+
+    const elements = document.querySelectorAll(revealSelectors.join(','));
+    if (!elements.length) {
+        return;
+    }
+
+    const observer = new IntersectionObserver(
+        (entries, obs) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+            });
+        },
+        {
+            threshold: 0.15,
+            rootMargin: '0px 0px -12% 0px',
+        }
+    );
+
+    elements.forEach((element, index) => {
+        element.classList.add('reveal-on-scroll');
+        element.style.setProperty('--reveal-delay', `${Math.min((index % 6) * 55, 275)}ms`);
+
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.88) {
+            element.classList.add('is-visible');
+            return;
+        }
+
+        observer.observe(element);
+    });
+};
+
+initRevealAnimations();
+
 const phonePattern = /^\+375 \(\d{2}\) \d{3}-\d{2}-\d{2}$/;
 const phonePrefix = '+375 (';
 

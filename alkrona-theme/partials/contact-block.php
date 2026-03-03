@@ -66,12 +66,11 @@
             <p class="product-popup__phone"><a href="tel:+375293191844">+375 (29) 319 18 44</a></p>
             <p class="product-popup__product">Товар: <strong class="js-popup-product-name"><?php echo esc_html((string) get_the_title()); ?></strong></p>
             <div class="product-popup__delivery">
-                <p class="product-popup__delivery-title"><strong>Самовывоз из питомника — бесплатно</strong></p>
+                <p class="product-popup__delivery-title"><strong>Самовывоз из питомника</strong></p>
                 <p class="product-popup__delivery-text">Адрес: микрорайон "Свислочь Новая", г.п. Свислочь, Минская область 220823.</p>
                 <p class="product-popup__delivery-text">График работы: 9:00-17:00, воскресенье — выходной.</p>
-                <p class="product-popup__delivery-text">Для розничных клиентов минимальный заказ — от 500 руб.</p>
-                <p class="product-popup__delivery-text">Доставка по г. Минску и в радиусе 10-30 км от Минска при заказе от 1000 руб., согласовывается с менеджером на индивидуальных условиях.</p>
-                <p class="product-popup__delivery-text"><strong>Доставка через транспортную компанию:</strong> только по г. Минску.</p>
+                <p class="product-popup__delivery-text">Условия оплаты: наличный и безналичный расчет.</p>
+                <p class="product-popup__delivery-text">Доставка по г. Минску и в радиусе 10-30 км от Минска при заказе от 500 руб., согласовывается с менеджером на индивидуальных условиях.</p>
             </div>
         </div>
     </div>

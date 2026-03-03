@@ -15,17 +15,17 @@ get_header();
 
             <div class="delivery-page__cards">
                 <article class="delivery-card">
-                    <h2 class="delivery-card__title">Самовывоз из питомника — бесплатно</h2>
+                    <h2 class="delivery-card__title">Самовывоз из питомника</h2>
                     <p class="delivery-card__text">
-                        Адрес: микрорайон "Свислочь Новая", г.п. Свислочь, Минская область 220823.<br>
+                        Адрес: микрорайон "Свислочь Новая", г.п. Свислочь, Минская область 220823.<br><br>
                         График работы: 9:00-17:00, воскресенье — выходной.
                     </p>
                 </article>
 
                 <article class="delivery-card">
-                    <h2 class="delivery-card__title">Розничные заказы</h2>
+                    <h2 class="delivery-card__title">Условия оплаты</h2>
                     <p class="delivery-card__text">
-                        Для розничных клиентов минимальный заказ — от 300 руб.
+                        Наличный и безналичный расчет.
                     </p>
                 </article>
 
@@ -37,12 +37,7 @@ get_header();
                     </p>
                 </article>
 
-                <article class="delivery-card">
-                    <h2 class="delivery-card__title">Транспортная компания</h2>
-                    <p class="delivery-card__text">
-                        Доставка через транспортную компанию доступна только по г. Минску.
-                    </p>
-                </article>
+                
             </div>
         </div>
     </section>
