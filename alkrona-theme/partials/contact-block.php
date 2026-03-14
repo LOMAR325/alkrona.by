@@ -1,5 +1,5 @@
 <section class="contact container" id="contacts">
-    <h4 class="contact__title">Если у вас есть вопросы или нужна помощь — мы всегда на связи!</h4>
+    <h4 class="contact__title" id="contact-form">Если у вас есть вопросы, хотите оформить заказ или нужна помощь - мы всегда на связи!</h4>
     <div class="contact__info">
         <div class="contact__info-item">
             <svg class="contact__info-item__icon" width="30" height="30" viewBox="0 0 30 30" fill="none"
@@ -20,7 +20,7 @@
             <a href="mailto:alkrona@inbox.ru">alkrona@inbox.ru</a>
         </div>
     </div>
-    <div class="form-map" id="contact-form">
+    <div class="form-map">
         <div class="form-map__head form-map__head--form">Мы свяжемся с вами!</div>
         <div class="form-map__head form-map__head--map">
             <div class="form-map__title">Наше расположение</div>

@@ -5,11 +5,10 @@
     <div class="container hero__inner">
         <div class="hero__text">
             <h1 class="hero__title"><span class="hero__title-bold">Питомник декоративных растений</span><br></h1>
-            <p class="hero__subtitle">Мы выращиваем растения, которые служат долго и создают живые пространства с заботой о людях и земле</p>
+            <p class="hero__subtitle">У нас вы найдете более 100 видов декоративных растений для профессионального озеленения и ландшафтного дизайна</p>
             <div class="hero__actions">
                 <a class="btn btn--primary hero__btn" href="#catalog">Каталог</a>
-                <a class="btn btn--secondary hero__btn hero__btn--accent" href="#contact-form">Подобрать
-                    растение</a>
+                <a class="btn btn--secondary hero__btn hero__btn--accent" href="#contact-form">Оформить заказ</a>
             </div>
         </div>
         <div class="hero__image">
@@ -18,7 +17,30 @@
     </div>
 </section>
 
-<section class="section section--soft audience" id="why">
+<section class="section section--soft categories" id="catalog">
+    <div class="container">
+        <h2 class="section-title">Категории растений</h2>
+        <div class="categories__grid">
+            <article class="category-card">
+                <img class="category-card__img" src="<?php echo esc_url(alkrona_theme_image_url('category_conifers', 'hvoi.png')); ?>" alt="Хвойные растения" />
+                <div class="category-card__body">
+                    <h3 class="category-card__title">Хвойные растения</h3>
+                    <a class="btn btn--secondary category-card__btn" href="<?php echo esc_url(alkrona_catalog_category_url_by_keyword('хвой')); ?>">Подробнее</a>
+                </div>
+            </article>
+
+            <article class="category-card">
+                <img class="category-card__img" src="<?php echo esc_url(alkrona_theme_image_url('category_shrubs', 'listven.png')); ?>" alt="Лиственные кустарники" />
+                <div class="category-card__body">
+                    <h3 class="category-card__title">Лиственные кустарники</h3>
+                    <a class="btn btn--secondary category-card__btn" href="<?php echo esc_url(alkrona_catalog_category_url_by_keyword('листвен')); ?>">Подробнее</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section audience" id="why">
     <div class="container">
         <h2 class="section-title">Кому мы подходим</h2>
         <div class="audience__grid">
@@ -49,28 +71,6 @@
     </div>
 </section>
 
-<section class="section categories" id="catalog">
-    <div class="container">
-        <h2 class="section-title">Категории растений</h2>
-        <div class="categories__grid">
-            <article class="category-card">
-                <img class="category-card__img" src="<?php echo esc_url(alkrona_theme_image_url('category_conifers', 'hvoi.png')); ?>" alt="Хвойные растения" />
-                <div class="category-card__body">
-                    <h3 class="category-card__title">Хвойные растения</h3>
-                    <a class="btn btn--secondary category-card__btn" href="<?php echo esc_url(alkrona_catalog_category_url_by_keyword('хвой')); ?>">Подробнее</a>
-                </div>
-            </article>
-
-            <article class="category-card">
-                <img class="category-card__img" src="<?php echo esc_url(alkrona_theme_image_url('category_shrubs', 'listven.png')); ?>" alt="Лиственные кустарники" />
-                <div class="category-card__body">
-                    <h3 class="category-card__title">Лиственные кустарники</h3>
-                    <a class="btn btn--secondary category-card__btn" href="<?php echo esc_url(alkrona_catalog_category_url_by_keyword('листвен')); ?>">Подробнее</a>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
 
 <section class="section section--soft products">
     <div class="container">
@@ -88,6 +88,7 @@
             ?>
                 <article class="product-card">
                     <div class="product-card__img-wrap">
+                        <a href="<?php echo esc_url($product_url); ?>">
                         <?php
                         if (has_post_thumbnail($product_id)) {
                             echo wp_get_attachment_image(
@@ -102,6 +103,7 @@
                                 '" alt="' . esc_attr($product_name) . '" loading="lazy" />';
                         }
                         ?>
+                        </a>
                     </div>
                     <h4 class="product-card__title"><?php echo esc_html($product_name); ?></h4>
                     <p class="product-card__price"><span class="product-card__price-from"><?php echo esc_html($price_prefix); ?></span><span class="product-card__price-value"><?php echo esc_html($price_text); ?></span></p>

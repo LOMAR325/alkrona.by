@@ -538,6 +538,7 @@ a {
   padding: 29px 20px 20px;
   display: flex;
   flex-direction: column;
+  background: #FBF7F1;
   gap: 29px;
   align-items: center;
   border-top: 1px solid #88A07A;
