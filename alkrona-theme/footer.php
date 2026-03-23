@@ -12,10 +12,13 @@
                 <span>Адрес:</span>
                 <span>микрорайон "Свислочь Новая", г.п. Свислочь,</span>
                 <span>Минская область 220823</span>
-                <span class="developer"><a href="https://zholudz.com/">Разработано <strong>VZ</strong>.</a></span>
+                <span class="developer"><a href="https://zholudz.com/" target="_blank">Разработано <strong>VZ</strong>.</a></span>
             </div>
         </div>
     </footer>
     <?php wp_footer(); ?>
-</body>
-</html>
+    <link rel="stylesheet" href="https://cdn.envybox.io/widget/cbk.css">
+    <script type="text/javascript" src="https://cdn.envybox.io/widget/cbk.js?wcb_code=fbe6667f1efa566e33a071a145c2b1a6" charset="UTF-8" async></script>
+    </body>
+
+    </html>

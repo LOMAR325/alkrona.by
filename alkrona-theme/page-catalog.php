@@ -141,7 +141,7 @@ $product_cats = get_terms([
                             <h4 class="product-card__title"><?php echo esc_html($product_name); ?></h4>
                             <p class="product-card__price"><span class="product-card__price-from"><?php echo esc_html($price_prefix); ?></span><span class="product-card__price-value"><?php echo esc_html($price_text); ?></span></p>
                             <div class="product-card__footer">
-                                <a class="btn btn--secondary product-card__btn" href="<?php the_permalink(); ?>">Подробнее</a>
+                                <a class="btn btn--secondary product-card__btn" href="<?php the_permalink(); ?>">Купить</a>
                                 <span class="pot-badge" aria-label="Размер горшка">
                                     <svg viewBox="0 0 53 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <line x1="12.5" y1="36.0002" x2="40.5" y2="36.0002" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
