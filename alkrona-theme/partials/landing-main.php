@@ -1,6 +1,4 @@
-<?php
-// Этот файл содержит HTML внутри <main> из оригинального index.html.
-?>
+<?php?>
 <section class="hero" id="top">
     <div class="container hero__inner">
         <div class="hero__text">
@@ -71,7 +69,6 @@
     </div>
 </section>
 
-
 <section class="section section--soft products">
     <div class="container">
         <h2 class="section-title">Популярные растения</h2>
@@ -89,20 +86,20 @@
                 <article class="product-card">
                     <div class="product-card__img-wrap">
                         <a href="<?php echo esc_url($product_url); ?>">
-                        <?php
-                        if (has_post_thumbnail($product_id)) {
-                            echo wp_get_attachment_image(
-                                get_post_thumbnail_id($product_id),
-                                'medium',
-                                false,
-                                ['class' => 'product-card__img', 'loading' => 'lazy']
-                            );
-                        } else {
-                            echo '<img class="product-card__img" src="' .
-                                esc_url(alkrona_theme_image_url('product_placeholder', 'birucha.png')) .
-                                '" alt="' . esc_attr($product_name) . '" loading="lazy" />';
-                        }
-                        ?>
+                            <?php
+                            if (has_post_thumbnail($product_id)) {
+                                echo wp_get_attachment_image(
+                                    get_post_thumbnail_id($product_id),
+                                    'medium',
+                                    false,
+                                    ['class' => 'product-card__img', 'loading' => 'lazy']
+                                );
+                            } else {
+                                echo '<img class="product-card__img" src="' .
+                                    esc_url(alkrona_theme_image_url('product_placeholder', 'birucha.png')) .
+                                    '" alt="' . esc_attr($product_name) . '" loading="lazy" />';
+                            }
+                            ?>
                         </a>
                     </div>
                     <h4 class="product-card__title"><?php echo esc_html($product_name); ?></h4>

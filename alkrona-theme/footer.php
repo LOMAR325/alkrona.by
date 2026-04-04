@@ -12,6 +12,8 @@
                 <span>Адрес:</span>
                 <span>микрорайон "Свислочь Новая", г.п. Свислочь,</span>
                 <span>Минская область 220823</span>
+                <span>График работы: 9:00-17:00,</span>
+                <span>воскресенье — выходной.</span>
                 <span class="developer"><a href="https://zholudz.com/" target="_blank">Разработано <strong>VZ</strong>.</a></span>
             </div>
         </div>
