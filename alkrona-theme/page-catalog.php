@@ -75,11 +75,7 @@ $subtitle   = ($selected_term instanceof WP_Term && $selected_term->description 
     ? wp_strip_all_tags($selected_term->description)
     : 'Надежные хвойные и декоративные растения для вашего сада.';
 
-$product_cats = get_terms([
-    'taxonomy'   => $products_taxonomy,
-    'hide_empty' => false,
-    'exclude'    => $default_category_id > 0 ? [$default_category_id] : [],
-]);
+$product_cats = alkrona_product_categories();
 ?>
 
 <main>

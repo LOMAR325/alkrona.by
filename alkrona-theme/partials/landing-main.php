@@ -1,4 +1,4 @@
-<?php?>
+<? php ?>
 <section class="hero" id="top">
     <div class="container hero__inner">
         <div class="hero__text">
@@ -127,4 +127,94 @@
     </div>
 </section>
 
+<section class="section about-values">
+    <div class="container">
+        <h2 class="section-title">Как мы работаем</h2>
+        <div class="about-values__grid">
+            <article class="about-value-card">
+                <h3 class="about-value-card__title">Подбор ассортимента</h3>
+                <p class="about-value-card__text">Помогаем выбрать виды и размеры растений под ваш бюджет, сроки и условия участка.</p>
+            </article>
+            <article class="about-value-card">
+                <h3 class="about-value-card__title">Качество материала</h3>
+                <p class="about-value-card__text">Перед отправкой проверяем состояние корневой системы и надземной части каждого растения.</p>
+            </article>
+            <article class="about-value-card">
+                <h3 class="about-value-card__title">Поставка партиями</h3>
+                <p class="about-value-card__text">Собираем как небольшие заказы для частных участков, так и оптовые партии под объекты.</p>
+            </article>
+            <article class="about-value-card">
+                <h3 class="about-value-card__title">Поддержка после покупки</h3>
+                <p class="about-value-card__text">Даём понятные рекомендации по посадке, поливу и уходу в первые месяцы после высадки.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section section--soft about-gallery">
+    <div class="container">
+        <h2 class="section-title">Фотографии питомника</h2>
+        <div class="about-gallery__grid">
+            <figure class="about-gallery__item about-gallery__item--wide">
+                <?php echo wp_get_attachment_image(374, 'full'); ?>
+                <figcaption class="about-gallery__caption">Участок хвойных растений</figcaption>
+            </figure>
+            <figure class="about-gallery__item about-gallery__item--half">
+                <?php echo wp_get_attachment_image(381, 'full'); ?>
+                <figcaption class="about-gallery__caption">Подготовка растений к отгрузке</figcaption>
+            </figure>
+            <figure class="about-gallery__item about-gallery__item--half">
+                <?php echo wp_get_attachment_image(370, 'full'); ?>
+                <figcaption class="about-gallery__caption">Лиственные кустарники</figcaption>
+            </figure>
+            <figure class="about-gallery__item about-gallery__item--half">
+                <?php echo wp_get_attachment_image(373, 'full'); ?>
+                <figcaption class="about-gallery__caption">Материал для озеленения проектов</figcaption>
+            </figure>
+            <figure class="about-gallery__item about-gallery__item--half">
+                <?php echo wp_get_attachment_image(378, 'full'); ?>
+                <figcaption class="about-gallery__caption">Декоративные кустарники</figcaption>
+            </figure>
+        </div>
+    </div>
+</section>
+
 <?php include __DIR__ . '/contact-block.php'; ?>
+
+<section class="section seo-content" aria-labelledby="landing-seo-title">
+    <div class="container">
+        <div class="seo-content__body about-hero__text">
+            <h2 class="section-title seo-content__title" id="landing-seo-title">Питомник декоративных растений в Беларуси</h2>
+            <p class="about-hero__lead">Alkrona — питомник декоративных растений в Республике Беларусь. Питомник и садовый центр работает с частными заказчиками, ландшафтными компаниями и объектами, где нужен качественный посадочный материал для озеленения участка. В продаже — растения для сада, частной территории, входных зон, живых изгородей и проектов для профессионального озеленения и ландшафтного дизайна.</p>
+            <p>В ассортименте более 100 видов. Есть хвойные растения, декоративные кустарники, плодовые деревья, саженцы для плотных посадок и оформления участка. Подбираем материал под конкретные условия: состав почвы, освещённость, размеры территории, задачу по декоративности и срокам посадки.</p>
+
+            <h3 class="seo-content__subtitle">Ассортимент и подбор</h3>
+            <p>Каталог помогает быстро выбрать растения по типу и назначению:</p>
+            <ul class="about-hero__list seo-content__list">
+                <li>хвойные формы для круглогодичного озеленения</li>
+                <li>декоративные кустарники для дорожек, зон отдыха и входной группы</li>
+                <li>плодовые деревья для сада и участка</li>
+                <li>растения для живой изгороди и ландшафтных композиций</li>
+            </ul>
+            <p>Подбираем не только вид, но и размер. Для проекта важны высота, возраст, форма кроны, плотность посадки и дальнейший уход.</p>
+
+            <h3 class="seo-content__subtitle">Качество посадочного материала</h3>
+            <p>Алькрона использует собственное выращивание и регулярный уход. Перед отгрузкой проверяем корневую систему, состояние кроны и побегов. Это важно для приживаемости после посадки и нормального роста в первые сезоны.</p>
+            <p>Растения подходят для условий Минска и Минской области. При подборе учитываем сезон посадки, зимостойкость и особенности дальнейшего ухода.</p>
+
+            <h3 class="seo-content__subtitle">Как мы работаем</h3>
+            <p>Помогаем выбрать растения под бюджет, сроки и условия участка. Собираем небольшие частные заказы и партии для объектов. Перед отправкой аккуратно готовим посадочный материал к перевозке. После покупки даём рекомендации по посадке, поливу и уходу.</p>
+
+            <h3 class="seo-content__subtitle">Доставка и самовывоз</h3>
+            <p>Самовывоз из питомника:<br>микрорайон «Свислочь Новая», г.п. Свислочь, Минская область, 220823</p>
+            <p>График работы:<br>9:00–17:00, воскресенье — выходной</p>
+            <p>Доставка по Минску и в радиусе 10–30 км от города при заказе от 500 руб. согласовывается с менеджером индивидуально.</p>
+
+            <h3 class="seo-content__subtitle">Условия оплаты</h3>
+            <p>Наличный и безналичный расчет.</p>
+
+            <h3 class="seo-content__subtitle">Контакты</h3>
+            <p>Телефон: <a class="seo-content__link" href="tel:+375293191844">+375 (29) 319 18 44</a></p>
+        </div>
+    </div>
+</section>

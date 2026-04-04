@@ -310,6 +310,34 @@ function alkrona_catalog_category_url(string $slug): string
     return home_url(user_trailingslashit('catalog/' . $slug));
 }
 
+function alkrona_product_categories(): array
+{
+    $exclude = [];
+    $default_category_id = alkrona_default_product_category_id();
+    if ($default_category_id > 0) {
+        $exclude[] = $default_category_id;
+    }
+
+    $terms = get_terms([
+        'taxonomy'   => alkrona_product_category_taxonomy(),
+        'hide_empty' => false,
+        'exclude'    => $exclude,
+    ]);
+
+    if (is_wp_error($terms) || !is_array($terms)) {
+        return [];
+    }
+
+    $categories = [];
+    foreach ($terms as $term) {
+        if ($term instanceof WP_Term) {
+            $categories[] = $term;
+        }
+    }
+
+    return $categories;
+}
+
 function alkrona_section_url(string $section_id): string
 {
     $section_id = ltrim($section_id, '#');
@@ -334,23 +362,7 @@ function alkrona_str_contains_ci(string $haystack, string $needle): bool
 
 function alkrona_catalog_category_url_by_keyword(string $keyword): string
 {
-    $exclude = [];
-    $default_category_id = alkrona_default_product_category_id();
-    if ($default_category_id > 0) {
-        $exclude[] = $default_category_id;
-    }
-
-    $terms = get_terms([
-        'taxonomy'   => alkrona_product_category_taxonomy(),
-        'hide_empty' => false,
-        'exclude'    => $exclude,
-    ]);
-
-    if (is_wp_error($terms)) {
-        return alkrona_catalog_url();
-    }
-
-    foreach ($terms as $term) {
+    foreach (alkrona_product_categories() as $term) {
         if (alkrona_str_contains_ci($term->name, $keyword)) {
             return alkrona_catalog_category_url((string) $term->slug);
         }
@@ -994,6 +1006,286 @@ function alkrona_featured_product_ids(int $limit = 4): array
 
     return array_map('intval', $featured_ids);
 }
+
+function alkrona_schema_prune($value)
+{
+    if (is_array($value)) {
+        $is_list = array_keys($value) === range(0, count($value) - 1);
+        $cleaned = [];
+
+        foreach ($value as $key => $item) {
+            $pruned = alkrona_schema_prune($item);
+            if ($pruned === null || $pruned === '' || $pruned === []) {
+                continue;
+            }
+
+            if ($is_list) {
+                $cleaned[] = $pruned;
+            } else {
+                $cleaned[$key] = $pruned;
+            }
+        }
+
+        return $cleaned;
+    }
+
+    if (is_string($value)) {
+        return trim($value);
+    }
+
+    return $value;
+}
+
+function alkrona_schema_seller(): array
+{
+    return [
+        '@type' => 'Organization',
+        'name'  => 'Alkrona',
+        'url'   => home_url('/'),
+    ];
+}
+
+function alkrona_schema_availability_url(string $availability, ?WC_Product $product = null): string
+{
+    $normalized = trim($availability);
+
+    if ($normalized !== '') {
+        if (alkrona_str_contains_ci($normalized, 'нет') || alkrona_str_contains_ci($normalized, 'out') || alkrona_str_contains_ci($normalized, 'законч')) {
+            return 'https://schema.org/OutOfStock';
+        }
+
+        if (alkrona_str_contains_ci($normalized, 'заказ') || alkrona_str_contains_ci($normalized, 'preorder') || alkrona_str_contains_ci($normalized, 'ожида')) {
+            return 'https://schema.org/PreOrder';
+        }
+
+        if (alkrona_str_contains_ci($normalized, 'налич') || alkrona_str_contains_ci($normalized, 'in stock') || alkrona_str_contains_ci($normalized, 'есть')) {
+            return 'https://schema.org/InStock';
+        }
+    }
+
+    if ($product instanceof WC_Product) {
+        return $product->is_in_stock() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+    }
+
+    return 'https://schema.org/InStock';
+}
+
+function alkrona_product_schema_images(int $post_id, ?WC_Product $product): array
+{
+    $attachment_ids = [];
+
+    if (has_post_thumbnail($post_id)) {
+        $attachment_ids[] = (int) get_post_thumbnail_id($post_id);
+    }
+
+    if ($product instanceof WC_Product) {
+        $attachment_ids = array_merge($attachment_ids, array_map('intval', $product->get_gallery_image_ids()));
+    }
+
+    $attachment_ids = array_values(array_unique(array_filter($attachment_ids)));
+    $images = [];
+
+    foreach ($attachment_ids as $attachment_id) {
+        $url = wp_get_attachment_image_url($attachment_id, 'full');
+        if (is_string($url) && $url !== '') {
+            $images[] = $url;
+        }
+    }
+
+    return $images;
+}
+
+function alkrona_product_schema_category(int $post_id): string
+{
+    $terms = get_the_terms($post_id, alkrona_product_category_taxonomy());
+    if (!is_array($terms)) {
+        return '';
+    }
+
+    $default_category_id = alkrona_default_product_category_id();
+    $names = [];
+
+    foreach ($terms as $term) {
+        if (!$term instanceof WP_Term) {
+            continue;
+        }
+
+        if ($default_category_id > 0 && (int) $term->term_id === $default_category_id) {
+            continue;
+        }
+
+        $names[] = $term->name;
+    }
+
+    return implode(', ', array_unique($names));
+}
+
+function alkrona_product_schema_additional_properties(int $post_id): array
+{
+    $variants = alkrona_product_variants($post_id);
+    $properties = [];
+
+    $latin_name = alkrona_product_latin_name($post_id);
+    if ($latin_name !== '') {
+        $properties[] = [
+            '@type' => 'PropertyValue',
+            'name'  => 'Latin name',
+            'value' => $latin_name,
+        ];
+    }
+
+    $container = alkrona_product_container($post_id);
+    if ($container !== '') {
+        $properties[] = [
+            '@type' => 'PropertyValue',
+            'name'  => 'Container',
+            'value' => $container,
+        ];
+    }
+
+    $height = alkrona_first_non_empty_variant_value($variants, 'height');
+    if ($height !== '') {
+        $properties[] = [
+            '@type' => 'PropertyValue',
+            'name'  => 'Height',
+            'value' => $height,
+        ];
+    }
+
+    return $properties;
+}
+
+function alkrona_product_schema_offers(int $post_id, WC_Product $product)
+{
+    $currency = function_exists('get_woocommerce_currency') ? get_woocommerce_currency() : 'BYN';
+    $variants = alkrona_product_variants($post_id);
+    $offers = [];
+    $numeric_prices = [];
+
+    foreach ($variants as $variant) {
+        if (!is_array($variant)) {
+            continue;
+        }
+
+        $price_value = alkrona_price_to_float((string) ($variant['price'] ?? ''));
+        if ($price_value === null) {
+            continue;
+        }
+
+        $numeric_prices[] = $price_value;
+        $offer_name_parts = array_filter([
+            trim((string) ($variant['pot'] ?? '')),
+            trim((string) ($variant['height'] ?? '')),
+        ]);
+
+        $offers[] = alkrona_schema_prune([
+            '@type'         => 'Offer',
+            'url'           => get_permalink($post_id),
+            'priceCurrency' => $currency,
+            'price'         => number_format($price_value, 2, '.', ''),
+            'availability'  => alkrona_schema_availability_url((string) ($variant['availability'] ?? ''), $product),
+            'sku'           => trim((string) ($variant['sku'] ?? '')),
+            'itemCondition' => 'https://schema.org/NewCondition',
+            'name'          => $offer_name_parts ? implode(' / ', $offer_name_parts) : '',
+            'seller'        => alkrona_schema_seller(),
+        ]);
+    }
+
+    if (!$offers) {
+        $price_value = alkrona_price_to_float((string) ($product->get_regular_price() !== '' ? $product->get_regular_price() : $product->get_price()));
+        if ($price_value === null) {
+            return [];
+        }
+
+        return alkrona_schema_prune([
+            '@type'         => 'Offer',
+            'url'           => get_permalink($post_id),
+            'priceCurrency' => $currency,
+            'price'         => number_format($price_value, 2, '.', ''),
+            'availability'  => alkrona_schema_availability_url('', $product),
+            'sku'           => $product->get_sku(),
+            'itemCondition' => 'https://schema.org/NewCondition',
+            'seller'        => alkrona_schema_seller(),
+        ]);
+    }
+
+    if (count($offers) === 1) {
+        return $offers[0];
+    }
+
+    return alkrona_schema_prune([
+        '@type'         => 'AggregateOffer',
+        'url'           => get_permalink($post_id),
+        'priceCurrency' => $currency,
+        'lowPrice'      => number_format(min($numeric_prices), 2, '.', ''),
+        'highPrice'     => number_format(max($numeric_prices), 2, '.', ''),
+        'offerCount'    => count($offers),
+        'offers'        => $offers,
+        'seller'        => alkrona_schema_seller(),
+    ]);
+}
+
+function alkrona_product_schema_data(int $post_id): array
+{
+    if (!alkrona_is_woocommerce_active() || !function_exists('wc_get_product')) {
+        return [];
+    }
+
+    $product = wc_get_product($post_id);
+    if (!$product instanceof WC_Product) {
+        return [];
+    }
+
+    $description = trim(wp_strip_all_tags(
+        (string) ($product->get_description() !== '' ? $product->get_description() : $product->get_short_description())
+    ));
+
+    if ($description === '') {
+        $description = trim(wp_strip_all_tags((string) get_the_excerpt($post_id)));
+    }
+
+    $variants = alkrona_product_variants($post_id);
+    $schema = [
+        '@context'          => 'https://schema.org',
+        '@type'             => 'Product',
+        '@id'               => get_permalink($post_id) . '#product',
+        'mainEntityOfPage'  => get_permalink($post_id),
+        'name'              => get_the_title($post_id),
+        'url'               => get_permalink($post_id),
+        'description'       => $description,
+        'image'             => alkrona_product_schema_images($post_id, $product),
+        'sku'               => $product->get_sku() !== '' ? $product->get_sku() : alkrona_first_non_empty_variant_value($variants, 'sku'),
+        'category'          => alkrona_product_schema_category($post_id),
+        'brand'             => [
+            '@type' => 'Brand',
+            'name'  => 'Alkrona',
+        ],
+        'additionalProperty' => alkrona_product_schema_additional_properties($post_id),
+        'offers'            => alkrona_product_schema_offers($post_id, $product),
+    ];
+
+    return alkrona_schema_prune($schema);
+}
+
+function alkrona_output_product_schema(): void
+{
+    if (!is_singular(alkrona_product_post_type())) {
+        return;
+    }
+
+    $post_id = get_queried_object_id();
+    if ($post_id < 1) {
+        return;
+    }
+
+    $schema = alkrona_product_schema_data($post_id);
+    if ($schema === []) {
+        return;
+    }
+
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
+}
+add_action('wp_head', 'alkrona_output_product_schema', 40);
 
 if (!isset($content_width)) {
     $content_width = 1200;
