@@ -68,7 +68,7 @@
             <div class="product-popup__delivery">
                 <p class="product-popup__delivery-title"><strong>Самовывоз из питомника</strong></p>
                 <p class="product-popup__delivery-text">Адрес: микрорайон "Свислочь Новая", г.п. Свислочь, Минская область 220823.</p>
-                <p class="product-popup__delivery-text">График работы: 9:00-17:00, воскресенье — выходной.</p>
+                <p class="product-popup__delivery-text">График работы: 9:00-17:00, суббота и воскресенье — выходной.</p>
                 <p class="product-popup__delivery-text">Условия оплаты: наличный и безналичный расчет.</p>
                 <p class="product-popup__delivery-text">Доставка по г. Минску и в радиусе 10-30 км от Минска при заказе от 500 руб., согласовывается с менеджером на индивидуальных условиях.</p>
             </div>
